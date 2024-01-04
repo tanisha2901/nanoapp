@@ -1,0 +1,214 @@
+<!-- connected.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Connected</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Additional styles for the loader and alcohol level display */
+    .loader {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: none;
+    }
+
+    #alcoholLevel {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 50px;
+      font-weight: bold;
+      color: #fff; /* White text color */
+      display: none;
+      z-index: 1;
+    }
+
+    #loadingMessage {
+      text-align: center;
+      color: #333;
+      font-size: 18px;
+      display: none;
+      z-index: 1;
+    }
+
+    #warningMessage {
+      text-align: center;
+      color: #ff0000; /* Red text color for warning */
+      font-size: 24px;
+      font-weight: bold;
+      display: none;
+      z-index: 1;
+    }
+
+    #successMessage {
+      text-align: center;
+      color: #fff; /* White text color for success */
+      font-size: 24px;
+      font-weight: bold;
+      display: none;
+      z-index: 1;
+    }
+
+    #actionsList {
+      text-align: center;
+      display: none;
+      z-index: 1;
+      margin-top: 10px;
+    }
+
+    /* Additional styles for the actions table */
+    #actionsTable {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    #actionsTable th, #actionsTable td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+
+    .actionButton {
+      margin-left: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <p id="loadingMessage">Connecting...</p>
+  </div>
+
+  <!-- Loader image -->
+  <div id="loader" class="loader">
+    <!-- Placeholder image (replace with your actual loader image) -->
+    <img src="loader.gif" alt="Loader">
+  </div>
+
+  <!-- Warning message -->
+  <div id="warningMessage"></div>
+
+  <!-- Alcohol level display -->
+  <div id="alcoholLevel"></div>
+
+  <!-- Success message -->
+  <div id="successMessage"></div>
+
+  <!-- Actions list -->
+  <div id="actionsList">
+    <p>Select an action:</p>
+    <table id="actionsTable">
+      <tr>
+        <td>
+          <label>
+            <input type="radio" name="action" value="bookCab"> Book a Cab
+          </label>
+        </td>
+        <td>
+          <button class="actionButton" onclick="performAction('bookCab')">Action</button>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label>
+            <input type="radio" name="action" value="callFriend"> Call a Friend
+          </label>
+        </td>
+        <td>
+          <button class="actionButton" onclick="performAction('callFriend')">Action</button>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label>
+            <input type="radio" name="action" value="messageFriend"> Message a Friend
+          </label>
+        </td>
+        <td>
+          <button class="actionButton" onclick="performAction('messageFriend')">Action</button>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label>
+            <input type="radio" name="action" value="bookRoom"> Book a Room
+          </label>
+        </td>
+        <td>
+          <button class="actionButton" onclick="performAction('bookRoom')">Action</button>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      // Display the loading message
+      var loadingMessage = document.getElementById("loadingMessage");
+      loadingMessage.textContent = "Connecting...";
+      loadingMessage.style.display = "block";
+
+      // Generate random waiting time between 3 and 10 seconds
+      var waitingTime = Math.floor(Math.random() * (10000 - 3000 + 1)) + 3000;
+
+      // Display loader
+      var loader = document.getElementById("loader");
+      loader.style.display = "block";
+
+      // Simulate random delay
+      setTimeout(function () {
+        // Hide loader
+        loader.style.display = "none";
+
+        // Display alcohol level
+        var alcoholLevel = document.getElementById("alcoholLevel");
+        alcoholLevel.style.display = "block";
+
+        // Generate random alcohol level between 10 and 100
+        var randomLevel = Math.floor(Math.random() * 100) + 10;
+
+        // Set the generated level as text content
+        alcoholLevel.innerHTML = `<p style="font-size: 50px;#fff;">Alcohol Level</p><p style="font-size: 150px; color: #fff;">${randomLevel}</p>`;
+
+        // Show the loading message if alcohol level is greater than or equal to 30
+        var warningMessage = document.getElementById("warningMessage");
+        if (randomLevel >= 30) {
+          warningMessage.style.display = "block";
+          warningMessage.textContent = "Warning: It is not safe for you to drive your car.";
+
+          // Show the actions list
+          var actionsList = document.getElementById("actionsList");
+          actionsList.style.display = "block";
+        } else if (randomLevel <= 20) {
+          // Show success message if alcohol level is equal to or less than 5
+          var successMessage = document.getElementById("successMessage");
+          successMessage.style.display = "block";
+          successMessage.textContent = "You are within the control limits. You can drive if you wish.";
+
+          // Hide the actions list
+          var actionsList = document.getElementById("actionsList");
+          actionsList.style.display = "none";
+        }
+
+        // Hide the loading message
+        loadingMessage.style.display = "none";
+      }, waitingTime);
+	  
+	   // Set the generated level as text content
+        alcoholLevel.innerHTML = `<p style="font-size: 50px;#fff;">Alcohol Level</p><p style="font-size: 150px; color: #fff;">${randomLevel}</p>`;
+    });
+
+    function performAction(action) {
+      alert('Performing action: ' + action);
+      // Add your logic to handle each action here
+    }
+  </script>
+</body>
+</html>

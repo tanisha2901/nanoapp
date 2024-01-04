@@ -1,0 +1,132 @@
+<!-- device_connection.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Device Connection</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Additional styles for the Bluetooth devices list and radio buttons */
+    #devicesTable {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    #devicesTable th, #devicesTable td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+
+    .deviceListItem {
+      margin-bottom: 10px;
+    }
+
+    .connectButton {
+      margin-top: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Hello <span id="userName"></span>!</h1>
+    <p>Personalized content for the user.</p>
+
+    <h2>Bluetooth Devices in Range</h2>
+    <table id="devicesTable">
+      <thead>
+        <tr>
+          <th>Select</th>
+          <th>Device Name</th>
+          <th>Connect</th>
+        </tr>
+      </thead>
+      <tbody id="devicesList">
+        <!-- Bluetooth devices will be dynamically added here -->
+      </tbody>
+    </table>
+
+    <form id="connectForm" onsubmit="return connectToDevice()">
+      <!-- Radio buttons for Bluetooth devices -->
+      <div id="deviceRadioButtons"></div>
+
+     
+    </form>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      // Get the username from the URL parameters
+      var urlParams = new URLSearchParams(window.location.search);
+      var username = urlParams.get('username');
+
+      if (username) {
+        // Display the username
+        document.getElementById('userName').textContent = username;
+      }
+
+      // Function to get the list of Bluetooth devices
+      function getBluetoothDevices() {
+        // Placeholder content for Bluetooth devices list
+        var devicesList = ["Mi", "Honor", "Apple"]; // Replace with actual device list
+
+        // Display the list in the container
+        var devicesListContainer = document.getElementById('devicesList');
+        devicesListContainer.innerHTML = "";
+
+        if (devicesList.length > 0) {
+          devicesList.forEach(function (device) {
+            var row = devicesListContainer.insertRow();
+            var cell1 = row.insertCell(0);
+            var cell2 = row.insertCell(1);
+            var cell3 = row.insertCell(2);
+
+            var radioButton = document.createElement('input');
+            radioButton.type = 'radio';
+            radioButton.name = 'bluetoothDevice';
+            radioButton.value = device;
+            cell1.appendChild(radioButton);
+
+            var label = document.createElement('label');
+            label.textContent = device;
+            cell2.appendChild(label);
+
+            // Connect button for each device
+            var connectButton = document.createElement('button');
+            connectButton.type = 'button';
+            connectButton.className = 'connectButton';
+            connectButton.textContent = 'Connect';
+            connectButton.onclick = function () {
+              connectToDevice(device);
+            };
+            cell3.appendChild(connectButton);
+          });
+        } else {
+          var row = devicesListContainer.insertRow();
+          var cell = row.insertCell(0);
+          cell.colSpan = 3;
+          cell.textContent = "No devices found.";
+        }
+      }
+
+      // Call the function to populate the Bluetooth devices list
+      getBluetoothDevices();
+
+      // Function to handle connecting to the selected Bluetooth device
+      window.connectToDevice = function (selectedDevice) {
+        if (selectedDevice) {
+          // Redirect to connected.html with the username and selected device as parameters
+          var username = document.getElementById('userName').textContent;
+          window.location.href = `connected.html?username=${username}&device=${selectedDevice}`;
+        } else {
+          alert("Please select a Bluetooth device to connect.");
+        }
+      };
+    });
+  </script>
+</body>
+</html>
